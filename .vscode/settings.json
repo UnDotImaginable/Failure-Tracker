@@ -10,5 +10,6 @@
             "database": "User_Information",
             "username": "postgres"
         }
-    ]
+    ],
+    "liveServer.settings.port": 5504
 }

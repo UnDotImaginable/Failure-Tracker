@@ -3,26 +3,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Failure Tracker</title>
-    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <h2>Welcome to Failure Tracker</h2>
     <h4>Log your failures and reflect on them</h4>
 
     <div>
-        <form action="">
-            <label for="first">
-                First name:
+        <form action="/login" method="POST">
+            <label for="username">
+                Username:
             </label>
-            <input type="text" name="first" 
-            id="first" placeholder="Enter your first name" required>
+            <input type="text" name="username"
+            id="username" placeholder="Enter your username" required>
 
             <br><br>
-            <label for="second"> 
-                Last name:
+            <label for="email">
+                Email:
             </label>
-            <input type="text" name="second" 
-            id="second" placeholder="Enter your last name" required>
+            <input type="text" name="email"
+            id="email" placeholder="Enter your email" required>
 
             <div>
                 <br>

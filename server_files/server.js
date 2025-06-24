@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
 // Configured one possible path for the webpage to take
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`); // Corrected line
+    console.log(`App listening on port ${port}`); 
 })
 
 

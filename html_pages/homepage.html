@@ -5,8 +5,54 @@
     <title>Document</title>
 </head>
 <body>
-    
 
-    <p>This is the homepage! Will add content soon...</p>
+    <div>
+        <p>
+            Welcome, <span id="welcome_text"></span>!
+        </p>
+        
+        <script>
+            document.getElementById("welcome_text").textContent = sessionStorage.getItem("username");
+        </script>
+        
+    </div>
+    
+    <script>
+
+        async function load_Failure_Entries() {
+            const user_id = sessionStorage.getItem("user_id");
+
+            const response = await fetch ("/get-failures", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id })
+            });
+
+            const result = await response.json();
+
+            if (response.status == 201) {
+                console.log("Failures: ", result.entries);
+                
+                const container = document.getElementById("failures_container");
+                result.entries.forEach(failure => {
+                    const p = document.createElement("p");
+                    p.textContent = `${failure.log_entry} (Logged on ${failure.created_at})`;
+                    container.appendChild(p);
+                });
+
+            }
+            else {
+                alert("Failed to load failures");
+            }
+        }
+
+        window.onload = load_Failure_Entries;
+
+    </script>
+
+    <div id="failures_container"></div>
+
+
+
 </body>
 </html>

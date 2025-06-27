@@ -46,10 +46,10 @@ app.post('/login', async (req, res) => {
     // Form submitted successfully!</h1>`);
 
 
-    const result = "SELECT * FROM users WHERE username LIKE '%' || $1 || '%';";
+    const result = "SELECT * FROM users WHERE username = $1 AND email = $2;";
 
     console.log(req.body);
-    const request_val = [data.username]
+    const request_val = [data.username, data.email]
 
 
     try {
@@ -58,10 +58,38 @@ app.post('/login', async (req, res) => {
         if ((await ask_question).rowCount == 0) {
             res.status(409).json({message: "User does not exist!"})
         }
+        else {
+            res.status(201).json({
+                message: "Found the specified user!",
+                id_number: ask_question.rows[0].user_id
+            })
+        }
 
-        res.status(201).json({message: "Found the specified user!"})
     }
 
+    catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: 'Internal server error' });    
+    }
+
+
+});
+
+
+app.post('/get-failures', async(req, res) => {
+    const { user_id } = req.body;
+
+    console.log('POST request to /get-failures received. Data:', user_id);
+    
+    try {
+        const result = await pool.query(
+            'SELECT * FROM log_entries WHERE user_id = $1',
+            [user_id]
+        );
+
+        res.status(201).json({ entries: result.rows })
+        console.log(result.rows);
+    }
     catch (err) {
         console.error('Database error:', err);
         res.status(500).json({ error: 'Internal server error' });    

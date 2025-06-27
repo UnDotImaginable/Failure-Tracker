@@ -55,11 +55,19 @@
             body: JSON.stringify({ username, email })
         });
 
+        const result = await response.json();
+
         if (response.status == 201) {
+
+            sessionStorage.setItem("username", username);
+            sessionStorage.setItem("email", email);
+            sessionStorage.setItem("user_id", result.id_number);
+
             window.location.href = "/homepage.html";
+
         }
         else if (response.status == 409) {
-            alert("User already exists!");
+            alert("The specified user doesn't exist. Check for possible typos!");
         }
         else {
             alert("Something went wrong!");

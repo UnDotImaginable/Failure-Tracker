@@ -138,6 +138,34 @@ app.post('/signup', async (req, res) => {
 
 */
 
+app.post('/send_failures', async (req, res) => {
+    const { user_id } = req.body;
+
+    console.log('POST request to /get-failures received. Data:', user_id);
+    
+    try {
+        const result = await pool.query(
+            'INSERT INTO log_entries (log_entry, user_id) VALUES ($1, $2)',
+            [req.body.journal_entry, user_id]
+        );
+
+        res.status(201).json({ entries: result.rows })
+        console.log(result.rows);
+    }
+    catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: 'Internal server error' });    
+    }
+})
+
+/*
+INSERT INTO log_entries (log_entry, user_id)
+VALUES (
+    'Failed to workout today. Should not have overslept',
+    9
+);
+*/
+
 pool.connect()
     .then(client => {
         return client

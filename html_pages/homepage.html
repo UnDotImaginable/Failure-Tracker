@@ -52,6 +52,53 @@
 
     <div id="failures_container"></div>
 
+    
+    <form id="entry_form">
+        <label for="journal_entry">
+            Entry:
+        </label>
+        <input type="text" name="journal_entry" id="journal_entry" placeholder="Enter a new entry">
+
+        <div>
+            <br>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById("entry_form").addEventListener("submit", async (e) => {
+            e.preventDefault(); 
+            
+            const journal_entry = document.getElementById("journal_entry").value;
+            const user_id = sessionStorage.getItem("user_id");
+
+            const response = await fetch("/send_failures", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ journal_entry, user_id })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Entry submitted successfully!");
+
+                const container = document.getElementById("failures_container");
+
+                const p = document.createElement("p");
+                const now = new Date().toLocaleString();
+                p.textContent = `${journal_entry} (Logged on: ${now})`;
+                container.appendChild(p);
+
+                document.getElementById("journal_entry").value = ""; 
+            } 
+            else {
+                alert("Failed to submit entry.");
+                console.error(result.error);
+            }
+        });
+    </script>
+
 
 
 </body>

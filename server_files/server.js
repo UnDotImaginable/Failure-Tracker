@@ -113,10 +113,14 @@ app.post('/signup', async (req, res) => {
         const ask_question = await pool.query(result, request_val)
 
         if ((await ask_question).rowCount == 0) {
-            res.status(409).json({message: "User already exists!"})
+            res.status(409).json({message: "User does not exist!"})
         }
-
-        res.status(201).json({message: "User created!"})
+        else {
+            res.status(201).json({
+                message: "Found the specified user!",
+                id_number: ask_question.rows[0].user_id
+            })
+        }
     }
 
     catch (err) {
